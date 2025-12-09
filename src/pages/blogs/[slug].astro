@@ -1,0 +1,32 @@
+---
+export const prerender = true;
+import type { GetStaticPaths } from "astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import "../../styles/global.css";
+import Layout from "../../layouts/PostLayout.astro";
+
+export const getStaticPaths = (async () => {
+  const blogs: CollectionEntry<"blogs">[] =
+    await getCollection("blogs");
+  return blogs.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}) satisfies GetStaticPaths;
+
+type Props = {
+  article: CollectionEntry<"blogs">;
+};
+
+const { article } = Astro.props as Props;
+const { title, date, authors } = article.data;
+const { Content } = await article.render();
+---
+
+<Layout title={title} date={date} authors={authors}>
+  <div class="lg:mx-20 xl:mx-40">
+    <article class="prose lg:prose-xl min-w-full text-gray-950">
+      <Content />
+    </article>
+  </div>
+</Layout>

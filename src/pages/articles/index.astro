@@ -1,0 +1,40 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/PageLayout.astro";
+import Card from "../../components/Card.astro";
+import Subscribe from "../../components/Subscribe.astro";
+
+const articles: CollectionEntry<"articles">[] = await getCollection("articles");
+articles.sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date));
+---
+
+<Layout title="Articles">
+  <div class="grid gap-8">
+    <section>
+      <p>
+        As Richard Feynman once said, “The best way to learn is to teach,” and
+        “If you can’t explain something simply, you don’t understand it well
+        enough.” Inspired by his philosophy, I’m planning to write a series of
+        detailed review articles that explore technical topics from the inside
+        out. I’m currently working on the first one, titled “The Physics,
+        Mathematics, and Computer Science behind Wireless Communication,” which
+        I aim to publish by the end of this month :)
+      </p>
+    </section>
+
+    <Subscribe />
+
+    <section class="flex flex-col gap-5">
+      {
+        articles.map((article) => (
+          <Card
+            link={`/articles/${article.slug}`}
+            title={article.data.title}
+            description={article.data.description}
+            date={article.data.date}
+          />
+        ))
+      }
+    </section>
+  </div>
+</Layout>

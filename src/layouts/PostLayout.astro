@@ -1,0 +1,62 @@
+---
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  date: string;
+  authors: { name: string; url: string }[];
+}
+
+const { title, date, authors } = Astro.props;
+
+const formattedDate = new Date(date).toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+console.log(authors);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+  </head>
+  <body class="mx-5 md:mx-20 lg:mx-[10%] my-10 md:my-20 bg-[#F5F5F5]">
+    <header class="md:text-center">
+      <div>
+        <h1 class="text-4xl font-bold mb-4">{title}</h1>
+        <p>
+          By {
+            authors.map((author, index) => (
+              <>
+                <a class="underline inline-block" href={author.url}>
+                  {author.name}
+                </a>
+                {index < authors.length - 1 && ","}
+              </>
+            ))
+          } &middot; {formattedDate}
+        </p>
+      </div>
+      <div class="text-[#0000FF]">
+        <button class="cursor-pointer" onclick="history.back()">
+          [Go back]
+        </button>
+        <a href="/">[Visit my homepage]</a>
+      </div>
+    </header>
+
+    <main class="mt-10 lg:mt-20">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,37 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/PageLayout.astro";
+import Card from "../../components/Card.astro";
+import Subscribe from "../../components/Subscribe.astro";
+
+const blogs: CollectionEntry<"blogs">[] = await getCollection("blogs");
+blogs.sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date));
+---
+
+<Layout title="Blogs">
+  <div class="grid gap-8">
+    <section>
+      <p>
+        Here are some personal blog posts where I share my thoughts on various
+        topics, including technology, science, and life in general. These posts
+        are more informal and reflective compared to my articles, and they
+        provide a glimpse into my perspectives and experiences.
+      </p>
+    </section>
+
+    <Subscribe />
+
+    <section class="flex flex-col gap-5">
+      {
+        blogs.map((article) => (
+          <Card
+            link={`/blogs/${article.slug}`}
+            title={article.data.title}
+            description={article.data.description}
+            date={article.data.date}
+          />
+        ))
+      }
+    </section>
+  </div>
+</Layout>

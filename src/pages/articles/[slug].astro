@@ -1,0 +1,88 @@
+---
+export const prerender = true;
+import type { GetStaticPaths } from "astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import "../../styles/global.css";
+import Layout from "../../layouts/PostLayout.astro";
+
+export const getStaticPaths = (async () => {
+  const articles: CollectionEntry<"articles">[] =
+    await getCollection("articles");
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}) satisfies GetStaticPaths;
+
+type Props = {
+  article: CollectionEntry<"articles">;
+};
+
+const { article } = Astro.props as Props;
+const { title, date, authors } = article.data;
+const { Content, headings } = await article.render();
+
+const buildTocItems = (headings: any[]) => {
+  const counters: number[] = [];
+
+  return headings.map((heading) => {
+    const depthIndex = heading.depth - 2;
+    counters[depthIndex] = (counters[depthIndex] || 0) + 1;
+    counters.splice(depthIndex + 1);
+
+    const prefix = counters.join(".");
+
+    const styles: Record<number, { fontSize: string; color: string }> = {
+      2: { fontSize: "text-base font-medium", color: "text-gray-900" },
+      3: { fontSize: "text-sm font-medium", color: "text-gray-700" },
+      4: { fontSize: "text-xs font-normal", color: "text-gray-500" },
+    };
+
+    const { fontSize, color } = styles[heading.depth] || styles[4];
+
+    return {
+      ...heading,
+      prefix,
+      fontSize,
+      color,
+      indent: (heading.depth - 2) * 1,
+      hasTopSpacing: heading.depth === 2,
+    };
+  });
+};
+
+const tocItems = buildTocItems(headings);
+---
+
+<Layout title={title} date={date} authors={authors}>
+  <div class="grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-8">
+    {
+      headings.length > 0 && (
+        <aside class="lg:sticky lg:top-20 h-fit border-l pl-4">
+          <h2 class="text-lg font-semibold mb-3 text-gray-700">
+            Table of Contents
+          </h2>
+          <ul class="space-y-1">
+            {tocItems.map((item) => (
+              <li
+                class={`${item.fontSize} ${item.color} ${item.hasTopSpacing ? "mt-3" : ""}`}
+                style={`margin-left: ${item.indent}rem`}
+              >
+                <a
+                  href={`#${item.slug}`}
+                  class="hover:text-[#0000FF] transition-colors"
+                >
+                  {item.prefix}. {item.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )
+    }
+
+    <article class="prose lg:prose-xl min-w-full text-gray-950">
+      <Content />
+    </article>
+  </div>
+</Layout>

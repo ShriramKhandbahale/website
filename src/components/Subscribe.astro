@@ -1,0 +1,57 @@
+<div id="subscribe-section">
+  <form id="subscribe-form" class="grid gap-2">
+    <label for="email">Signup to be notified when I write stuff:</label>
+    <div class="flex gap-2">
+      <input
+        type="email"
+        name="email"
+        id="email"
+        required
+        placeholder="xyz@example.com"
+        class="border-1 border-gray-400 p-2 px-4 w-full bg-white rounded-xs"
+      />
+      <input
+        type="submit"
+        value="Submit"
+        class="bg-gray-200 px-4 border-1 rounded-xs hover:bg-gray-300 transition cursor-pointer"
+      />
+    </div>
+  </form>
+</div>
+
+<script define:vars={{ source: Astro.props.source }}>
+  const form = document.getElementById("subscribe-form");
+  const section = document.getElementById("subscribe-section");
+  const submitBtn = form?.querySelector('input[type="submit"]');
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = form.email.value.trim();
+    if (!email) return;
+
+    submitBtn.value = "Submitting...";
+    submitBtn.disabled = true;
+
+    try {
+      const res = await fetch("/api/newsletter/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "SUBSCRIBE", email }),
+      });
+
+      if (!res.ok) throw new Error("Request failed");
+
+      section.innerHTML = `
+        <i>
+          Thanks for subscribing! Whenever I publish something, it will be delivered right to your inbox ;)
+        </i>
+      `;
+    } catch (err) {
+      submitBtn.value = "Submit";
+      submitBtn.disabled = false;
+
+      alert("Whaaaat! Bro its not working, Ctrl + Shift + I and let me know");
+    }
+  });
+</script>

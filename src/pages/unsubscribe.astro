@@ -1,0 +1,56 @@
+---
+import "../styles/global.css";
+
+const email = Astro.url.searchParams.get("email");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unsubscribe | Shriram Khandbahale</title>
+  </head>
+
+  <body
+    class="mx-5 md:mx-20 lg:mx-[20%] my-5 md:my-20 bg-[#F5F5F5] lg:text-xl grid justify-center gap-6"
+  >
+    <h1>
+      Unsubscribe from the <b>shriram.dev</b> mailing list
+    </h1>
+
+    <img
+      src="https://media1.tenor.com/m/wAOPu8jgUTkAAAAC/cat-thumbs-up.gif"
+      alt="Sad Cat"
+      class="mx-auto"
+    />
+
+    <form class="grid gap-4 w-full">
+      {
+        !email && (
+          <input
+            type="email"
+            name="email"
+            required={!email}
+            placeholder="Enter your email"
+            class="border border-gray-400 p-2 px-4 bg-white rounded-xs w-full"
+          />
+        )
+      }
+
+      <textarea
+        name="reason"
+        placeholder="Why...? (optional)"
+        rows="5"
+        class="border border-gray-400 p-2 px-4 w-full bg-white rounded-xs"
+      ></textarea>
+
+      <input
+        type="submit"
+        value="Unsubscribe"
+        class="bg-gray-200 p-2 border-1 rounded-xs hover:bg-gray-300 transition cursor-pointer"
+      />
+    </form>
+  </body>
+</html>
