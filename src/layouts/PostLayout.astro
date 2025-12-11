@@ -1,7 +1,7 @@
 ---
 import Footer from "../components/Footer.astro";
+import PostHog from "../components/posthog.astro";
 import "../styles/global.css";
-
 interface Props {
   title: string;
   date: string;
@@ -27,6 +27,7 @@ console.log(authors);
     <meta name="generator" content={Astro.generator} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <PostHog />
   </head>
   <body class="mx-5 md:mx-20 lg:mx-[10%] my-10 md:my-20 bg-[#F5F5F5]">
     <header class="md:text-center">
