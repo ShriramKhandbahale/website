@@ -6,8 +6,7 @@ import "../../styles/global.css";
 import Layout from "../../layouts/PostLayout.astro";
 
 export const getStaticPaths = (async () => {
-  const blogs: CollectionEntry<"blogs">[] =
-    await getCollection("blogs");
+  const blogs: CollectionEntry<"blogs">[] = await getCollection("blogs");
   return blogs.map((article) => ({
     params: { slug: article.slug },
     props: { article },
@@ -19,11 +18,18 @@ type Props = {
 };
 
 const { article } = Astro.props as Props;
-const { title, date, authors } = article.data;
+const { title, date, authors, description, tags, banner } = article.data;
 const { Content } = await article.render();
 ---
 
-<Layout title={title} date={date} authors={authors}>
+<Layout
+  title={title}
+  date={date.toISOString()}
+  authors={authors}
+  description={description}
+  tags={tags}
+  banner={banner}
+>
   <div class="lg:mx-20 xl:mx-40">
     <article class="prose lg:prose-xl min-w-full text-gray-950">
       <Content />

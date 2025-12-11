@@ -19,7 +19,7 @@ type Props = {
 };
 
 const { article } = Astro.props as Props;
-const { title, date, authors } = article.data;
+const { title, date, authors, description, tags, banner } = article.data;
 const { Content, headings } = await article.render();
 
 const buildTocItems = (headings: any[]) => {
@@ -54,7 +54,14 @@ const buildTocItems = (headings: any[]) => {
 const tocItems = buildTocItems(headings);
 ---
 
-<Layout title={title} date={date} authors={authors}>
+<Layout
+  title={title}
+  date={date.toISOString()}
+  authors={authors}
+  description={description}
+  tags={tags}
+  banner={banner}
+>
   <div class="grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-8">
     {
       headings.length > 0 && (

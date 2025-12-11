@@ -2,29 +2,32 @@
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import PostHog from "../components/posthog.astro";
+import SEO from "../components/SEO.astro";
 import "../styles/global.css";
 
 interface Props {
   title: string;
+  description: string;
+  tags?: string[];
+  banner?: {
+    url: string;
+    alt?: string;
+    width?: number;
+    height?: number;
+  };
 }
 
-const { title } = Astro.props;
-
+const { title, description, tags = [], banner } = Astro.props;
 const currentPath = new URL(Astro.request.url).pathname;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      {currentPath == "/" ? title : title + " | Shriram Khandbahale"}
-    </title>
+    <SEO title={title} description={description} tags={tags} banner={banner} />
     <PostHog />
   </head>
+
   <body
     class="mx-5 md:mx-20 lg:mx-[20%] my-10 md:my-20 bg-[#F5F5F5] lg:text-xl"
   >
