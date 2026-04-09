@@ -43,7 +43,7 @@ const formattedDate = new Date(date).toLocaleDateString("en-US", {
     <PostHog />
   </head>
 
-  <body class="mx-5 md:mx-20 lg:mx-[10%] my-10 md:my-20 bg-[#F5F5F5]">
+  <body class="mx-5 md:mx-20 lg:mx-[10%] my-10 md:my-20 prose-a:text-[#0000ee]">
     <header class="md:text-center">
       <div>
         <h1 class="text-4xl font-bold mb-4">{title}</h1>
@@ -64,7 +64,7 @@ const formattedDate = new Date(date).toLocaleDateString("en-US", {
         <button class="cursor-pointer" onclick="history.back()">
           [Go back]
         </button>
-        <a href="/">[Visit my homepage]</a>
+        <a href="/" class="no-underline">[Visit my homepage]</a>
       </div>
     </header>
 

@@ -4,30 +4,32 @@ interface Props {
 }
 
 const { title } = Astro.props;
+
+const navItems = [
+  { title: "Home", link: "/" },
+  { title: "Articles", link: "/articles" },
+  { title: "Blogs", link: "/blogs" },
+  { title: "Activities", link: "/activities" },
+  { title: "Projects", link: "/projects" },
+];
 ---
 
 <header class="flex flex-col md:flex-row justify-between lg:items-center gap-4">
   <div class="lg:flex items-center">
-    <h1 class="text-3xl md:text-4xl font-bold lg:font-normal">{title}</h1>
+    <h1 class="text-3xl font-bold lg:font-normal">{title}</h1>
   </div>
 
   <nav>
-    <ul class="flex gap-2 md:gap-8 lg:text-lg text-[#0000FF] flex-wrap">
-      <a href="/">
-      <li>[Home]</li>
-      </a>
-      <a href="/articles">
-        <li>[Articles]</li>
-      </a>
-      <a href="/blogs">
-        <li>[Blogs]</li>
-      </a>
-      <a href="/activities">
-        <li>[Activities]</li>
-      </a>
-      <a href="/projects">
-        <li>[Projects]</li>
-      </a>
+    <ul class="flex gap-2 md:gap-8 flex-wrap">
+      {
+        navItems.map((e) => (
+          <li>
+            <a href={e.link} class="no-underline">
+              [{e.title}]
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </nav>
 </header>
