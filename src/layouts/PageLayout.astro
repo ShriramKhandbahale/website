@@ -28,9 +28,7 @@ const currentPath = new URL(Astro.request.url).pathname;
     <PostHog />
   </head>
 
-  <body
-    class="mx-5 md:mx-20 lg:mx-[20%] my-10 md:my-20 bg-[#F5F5F5] lg:text-xl"
-  >
+  <body class="mx-5 md:mx-20 lg:mx-[20%] my-10 md:my-20 prose-a:text-[#0000ee]">
     <Header title={currentPath == "/" ? "shriram.dev" : title} />
     <main class="mt-10">
       <slot />
